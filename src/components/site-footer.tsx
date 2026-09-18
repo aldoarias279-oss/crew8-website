@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/container";
+import { pages } from "@/content/pages";
 import { logoAlt, site } from "@/content/site";
 import { images } from "@/lib/image-manifest";
 
@@ -30,7 +31,14 @@ export function SiteFooter() {
           </div>
 
           <nav aria-label="Footer">
-            <ul className="flex flex-wrap gap-x-7 gap-y-3">
+            <ul className="flex max-w-xl flex-wrap gap-x-6 gap-y-3">
+              {pages.map((page) => (
+                <li key={page.slug}>
+                  <Link href={`/${page.slug}`} className="label text-white/65 transition-colors hover:text-brand-gold">
+                    {page.label}
+                  </Link>
+                </li>
+              ))}
               {site.nav.map((item) => (
                 <li key={item.href}>
                   <Link href={item.href} className="label text-white/65 transition-colors hover:text-brand-gold">

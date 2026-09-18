@@ -48,3 +48,4 @@ next-env.d.ts
 # See README.md for how to restore them.
 /reference/*.html
 /assets/source-images
+/tmp-slides
