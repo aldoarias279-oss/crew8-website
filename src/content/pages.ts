@@ -12,6 +12,9 @@ export type PagePhotoSlot = {
   height?: number;
 };
 
+/** A plain line, or a line that opens one of the detail pages. */
+export type PageListItem = string | { text: string; href: string };
+
 export type InteriorPage = {
   slug: string;
   label: string;
@@ -19,7 +22,12 @@ export type InteriorPage = {
   eyebrow: string;
   kicker?: string;
   paragraphs: string[];
-  groups?: { heading?: string; items: string[] }[];
+  /**
+   * Detail pages sit under a hub. The header links to the hub.
+   * The hub page, and the footer, still lead to every detail page.
+   */
+  hub?: "what-we-do" | "the-crew";
+  groups?: { heading?: string; items: PageListItem[] }[];
   /** Empty objects are visible slots until photographs are supplied. */
   photoSlots: PagePhotoSlot[];
 };
@@ -52,12 +60,30 @@ export const pages: InteriorPage[] = [
     groups: [
       {
         items: [
-          "Vegetation Management: Crew 8 works to reduce hazardous vegetation, and create defensible spaces around homes, infrastructure, and critical wildfire evacuation routes.",
-          "Suppression: Crew 8 assists suppression crews with all risk incidents, including but not limited to vegetation fires, flooding, and downed tree removal.",
-          "Fuel Reduction: Crew 8 implements controlled burns, thinning operations, and other fuel reduction techniques to decrease the risk of wildfire ignition and spread.",
-          "Community Outreach: Besides their fieldwork, Crew 8 engages in community outreach and education efforts to raise awareness about wildfire safety and preparedness.",
-          "Master Mutual Aid: Under CAL OES, Crew 8 provides master mutual aid throughout the state.",
-          "Training: Crew 8 is held to a high rigorous training standard. Creating competent employees able to build lifelong skill sets.",
+          {
+            text: "Vegetation Management: Crew 8 works to reduce hazardous vegetation, and create defensible spaces around homes, infrastructure, and critical wildfire evacuation routes.",
+            href: "/vegetation-management",
+          },
+          {
+            text: "Suppression: Crew 8 assists suppression crews with all risk incidents, including but not limited to vegetation fires, flooding, and downed tree removal.",
+            href: "/suppression",
+          },
+          {
+            text: "Fuel Reduction: Crew 8 implements controlled burns, thinning operations, and other fuel reduction techniques to decrease the risk of wildfire ignition and spread.",
+            href: "/fuels-reduction",
+          },
+          {
+            text: "Community Outreach: Besides their fieldwork, Crew 8 engages in community outreach and education efforts to raise awareness about wildfire safety and preparedness.",
+            href: "/community-outreach",
+          },
+          {
+            text: "Master Mutual Aid: Under CAL OES, Crew 8 provides master mutual aid throughout the state.",
+            href: "/master-mutual-aid",
+          },
+          {
+            text: "Training: Crew 8 is held to a high rigorous training standard. Creating competent employees able to build lifelong skill sets.",
+            href: "/training-and-career",
+          },
         ],
       },
     ],
@@ -68,6 +94,7 @@ export const pages: InteriorPage[] = [
     label: "Vegetation Management",
     title: "Vegetation Management",
     eyebrow: "What we do",
+    hub: "what-we-do",
     kicker: "3,000 hours in 2024",
     paragraphs: [
       "Crew 8 works to reduce hazardous vegetation, and create defensible spaces around homes, infrastructure, and critical wildfire evacuation routes.",
@@ -94,6 +121,7 @@ export const pages: InteriorPage[] = [
     label: "Suppression",
     title: "Suppression",
     eyebrow: "What we do",
+    hub: "what-we-do",
     kicker: "2024",
     paragraphs: [
       "Crew 8 assists suppression crews with all risk incidents, including but not limited to vegetation fires, flooding, and downed tree removal.",
@@ -115,6 +143,7 @@ export const pages: InteriorPage[] = [
     label: "Fuels Reduction",
     title: "Fuels Reduction",
     eyebrow: "What we do",
+    hub: "what-we-do",
     kicker: "3,000 hours in 2024",
     paragraphs: [
       "Crew 8 implements controlled burns, thinning operations, and other fuel reduction techniques to decrease the risk of wildfire ignition and spread.",
@@ -155,6 +184,7 @@ export const pages: InteriorPage[] = [
     label: "Community Outreach",
     title: "Community Outreach",
     eyebrow: "What we do",
+    hub: "what-we-do",
     kicker: "2024",
     paragraphs: [
       "Besides their fieldwork, Crew 8 engages in community outreach and education efforts to raise awareness about wildfire safety and preparedness.",
@@ -180,6 +210,7 @@ export const pages: InteriorPage[] = [
     label: "Master Mutual Aid",
     title: "Master Mutual Aid",
     eyebrow: "What we do",
+    hub: "what-we-do",
     kicker: "10,000 hours in 2024",
     paragraphs: [
       "Under CAL OES, Crew 8 provides master mutual aid throughout the state.",
@@ -210,10 +241,19 @@ export const pages: InteriorPage[] = [
     photoSlots: emptySlots(6),
   },
   {
+    slug: "the-crew",
+    label: "The Crew",
+    title: "The Crew",
+    eyebrow: "The crew",
+    paragraphs: [],
+    photoSlots: [],
+  },
+  {
     slug: "training-and-career",
     label: "Training and Career",
     title: "Training & Career Development",
     eyebrow: "The crew",
+    hub: "the-crew",
     kicker: "5,000 hours in 2024",
     paragraphs: [
       "Crew 8 is held to a high rigorous training standard, creating competent employees able to build lifelong skill sets.",
@@ -241,6 +281,7 @@ export const pages: InteriorPage[] = [
     label: "Physical Fitness",
     title: "Physical Fitness",
     eyebrow: "The crew",
+    hub: "the-crew",
     kicker: "3,000 hours in 2024",
     paragraphs: [
       "Crew 8 is held to a regimented physical fitness standard.",
@@ -266,6 +307,7 @@ export const pages: InteriorPage[] = [
     label: "Crew 8 Development",
     title: "Crew 8 Career Development",
     eyebrow: "The crew",
+    hub: "the-crew",
     kicker: "Lifelong skills",
     paragraphs: [],
     groups: [
@@ -290,6 +332,7 @@ export const pages: InteriorPage[] = [
     label: "Members",
     title: "Members",
     eyebrow: "The crew",
+    hub: "the-crew",
     kicker: "Who we are",
     paragraphs: [
       "Names and cities as listed in the 2024 Crew 8 presentation.",
@@ -325,4 +368,9 @@ export const pages: InteriorPage[] = [
 
 export function getPage(slug: string) {
   return pages.find((page) => page.slug === slug);
+}
+
+/** Detail pages that belong under a hub such as What We Do or The Crew. */
+export function pagesInHub(hub: string) {
+  return pages.filter((page) => page.hub === hub);
 }

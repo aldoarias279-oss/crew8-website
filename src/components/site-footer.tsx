@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/container";
-import { pages } from "@/content/pages";
+import { pagesInHub } from "@/content/pages";
 import { logoAlt, site } from "@/content/site";
 import { images } from "@/lib/image-manifest";
 
@@ -30,22 +30,34 @@ export function SiteFooter() {
             </div>
           </div>
 
-          <nav aria-label="Footer">
-            <ul className="flex max-w-xl flex-wrap gap-x-6 gap-y-3">
-              {pages.map((page) => (
-                <li key={page.slug}>
-                  <Link href={`/${page.slug}`} className="label text-white/65 transition-colors hover:text-brand-gold">
-                    {page.label}
-                  </Link>
-                </li>
-              ))}
-              {site.nav.map((item) => (
-                <li key={item.href}>
-                  <Link href={item.href} className="label text-white/65 transition-colors hover:text-brand-gold">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
+          <nav aria-label="Footer" className="w-full max-w-3xl">
+            <ul className="grid gap-8 sm:grid-cols-2 xl:grid-cols-3">
+              {site.nav.map((item) => {
+                const slug = item.href.startsWith("/") && !item.href.includes("#") ? item.href.slice(1) : "";
+                const children = slug ? pagesInHub(slug) : [];
+
+                return (
+                  <li key={item.href}>
+                    <Link href={item.href} className="label text-white transition-colors hover:text-brand-gold">
+                      {item.label}
+                    </Link>
+                    {children.length > 0 ? (
+                      <ul className="mt-3 space-y-2">
+                        {children.map((page) => (
+                          <li key={page.slug}>
+                            <Link
+                              href={`/${page.slug}`}
+                              className="text-[0.9375rem] leading-snug text-white/65 transition-colors hover:text-brand-gold"
+                            >
+                              {page.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                  </li>
+                );
+              })}
             </ul>
           </nav>
         </div>
