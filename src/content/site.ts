@@ -27,9 +27,13 @@ export const site = {
     "Crew 8 is an Alameda County Fire Department wildland hand crew supporting hazardous fuels reduction, defensible space improvement, roadside vegetation projects, storm recovery, public safety operations, training, and emergency response.",
 
   /**
-   * Slide pages live in the About dropdown. Gallery and Contact stay as top-level links.
+   * Short header. Vegetation, suppression, the roster, and the other detail pages
+   * stay on the site — they open from What We Do and The Crew, and from the footer.
    */
   nav: [
+    { label: "Who is Crew 8", href: "/who-is-crew-8" },
+    { label: "What We Do", href: "/what-we-do" },
+    { label: "The Crew", href: "/the-crew" },
     { label: "Gallery", href: "/gallery" },
     { label: "Contact", href: "/#contact" },
   ],
